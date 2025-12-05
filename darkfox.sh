@@ -228,25 +228,6 @@ sudo python3 install.py
 fi
 echo
 
-# Editing Firefox about:config this allows DarkWeb .onion links to be opened with Firefox
-#echo 'user_pref("network.dns.blockDotOnion", false);' > user.js
-#sudo mv user.js /home/kali/.mozilla/firefox/*default-esr/
-# Create the files without having to run firefox for the first time.
-# Launch Firefox to auto-create the profile, then kill it
-USER_JS_PATH=$(find /home/kali/.mozilla/firefox/ -name "user.js" | head -n 1)
-if [[ -f "$USER_JS_PATH" ]]; then
-    if ! grep -q 'user_pref("network.dns.blockDotOnion", false);' "$USER_JS_PATH"; then
-        echo 'user_pref("network.dns.blockDotOnion", false);' >> "$USER_JS_PATH"
-    fi
-else
-    sudo -u kali firefox >/dev/null 2>&1 &
-    sleep 2
-    sudo pkill firefox
-    echo 'user_pref("network.dns.blockDotOnion", false);' > user.js
-    sudo mv user.js /home/kali/.mozilla/firefox/*default-esr/
-fi
-echo
-
 # Check/Install pyahmia
 PYAHMIA_BIN="/root/.local/bin/pyahmia"
 if [ -x "$PYAHMIA_BIN" ] && "$PYAHMIA_BIN" -v &> /dev/null; then
@@ -265,6 +246,25 @@ else
     echo
 fi
 
+
+# Editing Firefox about:config this allows DarkWeb .onion links to be opened with Firefox
+#echo 'user_pref("network.dns.blockDotOnion", false);' > user.js
+#sudo mv user.js /home/kali/.mozilla/firefox/*default-esr/
+# Create the files without having to run firefox for the first time.
+# Launch Firefox to auto-create the profile, then kill it
+USER_JS_PATH=$(find /home/kali/.mozilla/firefox/ -name "user.js" | head -n 1)
+if [[ -f "$USER_JS_PATH" ]]; then
+    if ! grep -q 'user_pref("network.dns.blockDotOnion", false);' "$USER_JS_PATH"; then
+        echo 'user_pref("network.dns.blockDotOnion", false);' >> "$USER_JS_PATH"
+    fi
+else
+    sudo -u kali firefox >/dev/null 2>&1 &
+    sleep 2
+    sudo pkill firefox
+    echo 'user_pref("network.dns.blockDotOnion", false);' > user.js
+    sudo mv user.js /home/kali/.mozilla/firefox/*default-esr/
+fi
+echo
 echo -ne '#######################\r'
 echo
 echo "Config Looks Good So Far"
