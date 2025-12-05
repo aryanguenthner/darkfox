@@ -414,4 +414,4 @@ If DarkFox helps your investigations, please:
 
 ---
 
-**Stay anonymous. Stay secure. Stay ethical.** 🦊
+**Stay secure. Stay ethical.** 🦊
