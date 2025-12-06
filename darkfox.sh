@@ -4,7 +4,7 @@
 # Made for CTI OSINT cyber security research on the Dark Deep Web
 # Intended to be used on Kali Linux
 # Updated for compatibility and better Tor handling
-# Hacked on 12/04/2025, pay me later
+# Hacked on 12/06/2025, pay me later
 # Great ideas
 # Go here --> https://addons.mozilla.org/en-US/firefox/addon/noscript/
 # install_addon "https://addons.mozilla.org/firefox/downloads/file/4141345/noscript-11.4.26.xpi" "noscript"
@@ -85,6 +85,21 @@ for pkg in "${PACKAGES[@]}"; do
         fi
     fi
 done
+
+# Add Desktop LauncherLAUNCHER_SOURCE="/opt/darkfox/DarkFox.desktop"
+LAUNCHER_DEST="/home/kali/Desktop/DarkFox.desktop"
+
+# Check if the file exists using the -f flag
+if [ -f "$LAUNCHER_DEST" ]; then
+    echo "DarkFox launcher already exists on Desktop. Skipping..."
+else
+    echo "Adding DarkFox launcher to Desktop..."
+    cp "$LAUNCHER_SOURCE" "$LAUNCHER_DEST"
+    
+    # Ensure we target the file we just copied
+    chmod 777 "$LAUNCHER_DEST"
+fi 
+echo
 
 # Network Information
 echo -e "\e[031mGetting Network Information\e[0m"
@@ -565,6 +580,7 @@ echo
 sudo ./gowitness scan file -f "$DARKFOX_DIR/results.onion.csv" \
     --threads 16 \
     --write-db \
+    --screenshot-fullpage \
     --chrome-proxy socks5://127.0.0.1:9050 \
     2>&1 | grep -Ev "ERROR|unknown IPAddressSpace value: Loopback"
 
