@@ -86,7 +86,8 @@ for pkg in "${PACKAGES[@]}"; do
     fi
 done
 
-# Add Desktop LauncherLAUNCHER_SOURCE="/opt/darkfox/DarkFox.desktop"
+# Add Desktop Launcher
+LAUNCHER_SOURCE="/opt/darkfox/DarkFox.desktop"
 LAUNCHER_DEST="/home/kali/Desktop/DarkFox.desktop"
 
 # Check if the file exists using the -f flag
