@@ -232,16 +232,44 @@ echo
 
 # Verify TorGhost is installed
 TORNG="/usr/bin/torghostng"
-if [ -f "$TORNG" ]
-then
+
+if [ -f "$TORNG" ]; then
     echo -e "\e[031mFound TorghostNG\e[0m"
 else
+    echo -e "\e[33mInstalling TorghostNG...\e[0m"
+    
+    # 1. Clean up previous failed installs to prevent "destination exists" git errors
+    if [ -d "/opt/torghostng" ]; then
+        echo "Removing broken/old /opt/torghostng directory..."
+        sudo rm -rf /opt/torghostng
+    fi
 
-sudo git clone https://github.com/aryanguenthner/torghostng /opt/torghostng
-cd /opt/torghostng
-sudo touch /etc/sysctl.conf
-sudo python3 install.py
-    echo "TorghostNG is installed"
+    # 2. Clone the repo
+    sudo git clone https://github.com/aryanguenthner/torghostng /opt/torghostng
+    cd /opt/torghostng || exit
+
+    # 3. Pre-install dependencies via APT to bypass PIP restrictions (PEP 668)
+    # This prevents install.py from crashing when it tries to use pip
+    echo "Installing Python dependencies via APT..."
+    sudo apt-get install -y python3-requests python3-stem python3-packaging
+
+    # 4. Ensure sysctl.conf exists
+    if [ ! -f /etc/sysctl.conf ]; then
+        sudo touch /etc/sysctl.conf
+    fi
+
+    # 5. Run the installer
+    sudo chmod +x install.py
+    sudo python3 install.py
+
+    # 6. Fallback Verification: If the bin file wasn't created, force create the link
+    if [ ! -f "/usr/bin/torghostng" ]; then
+        echo "Standard install failed, forcing manual symlink..."
+        sudo ln -sf /opt/torghostng/torghostng.py /usr/bin/torghostng
+        sudo chmod +x /usr/bin/torghostng
+    fi
+
+    echo "TorghostNG installation attempt complete."
 fi
 echo
 
