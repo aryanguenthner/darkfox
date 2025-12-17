@@ -4,8 +4,9 @@
 # Made for CTI OSINT cyber security research on the Dark Deep Web
 # Intended to be used on Kali Linux
 # Updated for compatibility and better Tor handling
-# Hacked on 12/06/2025, pay me later
+# Hacked on 12/17/2025, pay me later
 # Great ideas
+# Maybe run darkfox two times to make sure everything is installed.
 # Go here --> https://addons.mozilla.org/en-US/firefox/addon/noscript/
 # install_addon "https://addons.mozilla.org/firefox/downloads/file/4141345/noscript-11.4.26.xpi" "noscript"
 # install_addon "https://addons.mozilla.org/firefox/downloads/file/4125998/adblock_plus-3.17.1.xpi" "adblock_plus"
@@ -283,6 +284,35 @@ fi
 echo
 echo -ne '#######################\r'
 echo
+
+echo
+echo "Mozilla can actually go on the DarkWeb, Use Torbrowser first"
+# --- Configure Firefox to allow .onion sites ---
+echo "[+] Configuring Firefox to allow .onion sites..."
+
+# Create the policies directory if it doesn't exist
+# Note: Kali uses Firefox ESR by default. Adjust path if using standard Firefox.
+FIREFOX_POLICY_DIR="/etc/firefox-esr/policies"
+mkdir -p "$FIREFOX_POLICY_DIR"
+
+# Write the policies.json file
+cat <<EOF > "$FIREFOX_POLICY_DIR/policies.json"
+{
+  "policies": {
+    "Preferences": {
+      "network.dns.blockDotOnion": {
+        "Value": false,
+        "Status": "locked"
+      }
+    }
+  }
+}
+EOF
+
+echo "[+] Firefox policy applied: network.dns.blockDotOnion = false"
+echo
+
+echo
 echo "Config Looks Good So Far"
 echo
 echo "Working directory: $(pwd)"
@@ -387,7 +417,7 @@ if [ "$COUNT" -eq 0 ]; then
                 }
             }' "$AHMIA_CSV" | sort -u > "$RESULTS_FILE"
             
-            sed -i '/invest/d; /222/d; /drug/d; /porn/d' "$RESULTS_FILE"
+            sed -i '/invest/d; /222/d; /drug/d; /porn/d; /fresh/d' "$RESULTS_FILE"
             
             COUNT=$(wc -l < "$RESULTS_FILE")
             echo -e "\e[31mOnions Found:\e[0m $COUNT"
