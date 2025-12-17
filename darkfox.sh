@@ -326,13 +326,10 @@ echo
 echo "Mozilla can actually go on the DarkWeb, Use Torbrowser first"
 # --- Configure Firefox to allow .onion sites ---
 echo "[+] Configuring Firefox to allow .onion sites..."
-echo
-
 # Create the policies directory if it doesn't exist
 # Note: Kali uses Firefox ESR by default. Adjust path if using standard Firefox.
 FIREFOX_POLICY_DIR="/etc/firefox-esr/policies"
 mkdir -p "$FIREFOX_POLICY_DIR"
-
 # Write the policies.json file
 cat <<EOF > "$FIREFOX_POLICY_DIR/policies.json"
 {
@@ -346,7 +343,6 @@ cat <<EOF > "$FIREFOX_POLICY_DIR/policies.json"
   }
 }
 EOF
-
 echo "[+] Firefox policy applied: network.dns.blockDotOnion = false"
 echo
 
@@ -583,7 +579,8 @@ echo "File contains $VERIFY_COUNT lines"
 echo
 
 # Now run onion_verifier
-echo -e "\e[031mVerifying Onions...\e[0m"
+echo -e "\e[031m[+] Verifying Onions...\e[0m"
+echo
 cd "$DARKFOX_DIR" || exit 1
 sudo python3 "$DARKFOX_DIR/onion_verifier.py" "$DARKFOX_DIR/results.onion.csv" | tee "$DARKFOX_DIR/onion_verifier.log"
 echo
