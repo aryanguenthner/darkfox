@@ -370,7 +370,7 @@ DarkFox is intended for:
 - [GoWitness](https://github.com/sensepost/gowitness) - Screenshot capture
 - [TorGhostNG](https://github.com/giterlizzi/torghostng) - Tor routing
 - [Tor Project](https://www.torproject.org/) - Anonymity network
-- [Ai](Aryan Intelligence) - My Own Brain, My Own idea, Gemini, ChatGPT, Claude, and more.
+- [Ai](Aryan Intelligence) - Giving back to the community, contributing, and helping make the world a litte better one byte at a time.
 
 
 ---
