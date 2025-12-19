@@ -16,8 +16,8 @@
 
 - 🔍 **Discover** - Search for .onion sites using Ahmia
 - ✅ **Verify** - Validate discovered onion addresses
-- 📸 **Document** - Capture screenshots and metadata great for investigations
-- 📊 **Report** - Organize findings in LibreOffice spreadsheets
+- 📸 **Document** - Capture screenshots and forensic metadata without visiting the darkweb site!
+- 📊 **Report** - Document and organize findings in a LibreOffice spreadsheet
 - 🔒 **Secure** - Route all traffic through Tor network
 
 **Perfect for:**
