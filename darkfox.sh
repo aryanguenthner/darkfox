@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-printf '\033]0;%s\007' "DarkFox"
 
 #######################################################
 # Made for CTI OSINT cyber security research on the Dark Deep Web
