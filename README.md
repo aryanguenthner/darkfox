@@ -44,6 +44,7 @@
 - 📝 **Investigation Documentation** - LibreOffice Calc worksheets
 - 🔄 **Real-time Verification** - Check onion site availability
 - 🗺️ **Network Mapping** - Track your IP changes (clearnet vs Tor)
+<img width="1831" height="707" alt="10Screenshot_2025-12-18_17_09_02" src="https://github.com/user-attachments/assets/4dca455c-5ae5-48f4-9eb1-6582596f3f87" />
 
 ### Security Features
 - ✅ Input sanitization to prevent command injection
@@ -58,6 +59,7 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
+<img width="1857" height="1033" alt="11Screenshot_2025-12-18_17_09_02" src="https://github.com/user-attachments/assets/65df9add-adfb-4c0d-bbbc-fcd6d0a4969a" />
 
 **Required:**
 - Kali Linux XFCE (or Debian-based distro)
@@ -107,6 +109,7 @@ sudo bash darkfox.sh
    - Verifies discovered sites
    - Captures screenshots
    - Opens workspace
+<img width="1487" height="1026" alt="12Screenshot_2025-12-18_17_09_02" src="https://github.com/user-attachments/assets/36408a93-74b4-4e2a-9568-0ba0c288ac17" />
 
 4. **Review CTI findings:**
    - LibreOffice opens a spreadsheet with results (Great for taking notes and keeping track of your investigation)
