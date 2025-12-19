@@ -61,10 +61,11 @@
 
 **Required:**
 - Kali Linux XFCE (or Debian-based distro)
+- 4GB to 16GB RAM, 4 CPU
 - Root/sudo access
 - Active internet connection
 
-**Automatically Installed Requirements:**
+**DarkFox Requirements:**
 - Tor & TorGhostNG
 - pyAhmia
 - GoWitness 3.0.5
