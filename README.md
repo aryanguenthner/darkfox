@@ -1,6 +1,7 @@
 # 🦊 DarkFox 12/05/2025
 
 **Dark Web CTI & OSINT Investigation Framework**
+<img width="1401" height="772" alt="1aDarkfox" src="https://github.com/user-attachments/assets/51cd783f-f1f1-42ca-811f-cad01ec04163" />
 
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Kali%20Linux-557C94.svg)](https://www.kali.org/)
@@ -11,8 +12,10 @@
 ---
 
 ## 🎯 What is DarkFox?
+<img width="1017" height="561" alt="1darkfox" src="https://github.com/user-attachments/assets/2a05fae6-d846-4247-8ccf-add4282b6f3b" />
 
 🦊 DarkFox is an automated Dark Web investigation framework that streamlines the OSINT/CTI workflow:
+<img width="913" height="861" alt="2darkfox" src="https://github.com/user-attachments/assets/dcdb3d52-0e08-49b2-b16f-d549d6119520" />
 
 - 🔍 **Discover** - Search for .onion sites using Ahmia
 - ✅ **Verify** - Validate discovered onion addresses
@@ -27,10 +30,12 @@
 - OSINT investigators
 - Red team operations
 - Blue team operations
+<img width="932" height="769" alt="4darkfox" src="https://github.com/user-attachments/assets/bd9ede29-867b-469c-8302-38df27032f3e" />
 
 ---
 
 ## ✨ Features
+<img width="932" height="769" alt="5darkfox" src="https://github.com/user-attachments/assets/fe3a8bcf-7e64-4859-816f-f092ac9ef274" />
 
 ### Core Capabilities
 - 🌐 **Automated Tor Integration** - Connect via TorGhostNG with country selection
@@ -46,6 +51,7 @@
 - ✅ Process cleanup on exit
 - ✅ Tor connection verification
 - ✅ Isolated Python virtual environments
+<img width="1920" height="1200" alt="6darkfox" src="https://github.com/user-attachments/assets/1a7349cc-9953-4f4a-a1b0-0fb1b3ca286c" />
 
 ---
 
