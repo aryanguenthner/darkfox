@@ -1,3 +1,4 @@
+import sys
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -38,7 +39,7 @@ def is_onion_live(url):
 # Function to get the title of a .onion page
 def get_title(url):
     try:
-        response = session.get(url, timeout=5)
+        response = session.get(url, timeout=10)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -83,8 +84,16 @@ def process_site(site):
     return [site, title]
 
 # Input and output files
-input_file = "results.onion.csv"
-output_file = "onion_page_titles.csv"
+if len(sys.argv) < 2:
+    print("Usage: onion_verifier.py <candidates_file> [output_file]")
+    sys.exit(1)
+
+input_file = sys.argv[1]
+output_file = sys.argv[2] if len(sys.argv) > 2 else "onion_page_titles.csv"
+
+if not os.path.isfile(input_file):
+    print(f"Error: candidates file not found: {input_file}")
+    sys.exit(1)
 
 # Read .onion URLs from file
 with open(input_file, "r", encoding="utf-8") as f:
@@ -96,7 +105,7 @@ with open(output_file, "w", newline="", encoding="utf-8") as file:
     writer.writerow(["Onion Site", "Title"])
 
     # Limit the number of threads (adjust as needed, 10 threads as example)
-    with ThreadPoolExecutor(max_workers=24) as executor:
+    with ThreadPoolExecutor(max_workers=12) as executor:
         results = executor.map(process_site, onion_sites)
         
         # Write results to file
