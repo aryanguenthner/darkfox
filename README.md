@@ -1,4 +1,4 @@
-# 🦊 DarkFox 09/09/2026
+# 🦊 DarkFox 09/15/2026
 
 **Darkweb CTI & OSINT Investigation Framework**
 <img width="1401" height="772" alt="1aDarkfox" src="https://github.com/user-attachments/assets/51cd783f-f1f1-42ca-811f-cad01ec04163" />
