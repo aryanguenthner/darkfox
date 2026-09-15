@@ -178,13 +178,12 @@ DARKFOX_DIR="/opt/darkfox"
 cd "$DARKFOX_DIR" || exit 1
 
 # Verify gowitness
-GOWIT="/opt/darkfox/gowitness"
-if [ -f "$GOWIT" ]; then
-    print_found "GoWitness 3.0.5"
+GOWIT="$(command -v gowitness)"
+if [ -n "$GOWIT" ]; then
+    print_found "GoWitness"
 else
-    echo -e "\e[031mDownloading Missing GoWitness 3.0.5\e[0m"
-    wget --no-check-certificate -O gowitness 'https://drive.google.com/uc?export=download&id=1C-FpaGQA288dM5y40X1tpiNiN8EyNJKS'
-    chmod a+x gowitness
+    echo -e "\e[031mGoWitness not found on PATH. Install it (e.g. 'go install github.com/sensepost/gowitness@latest') and re-run.\e[0m"
+    exit 1
 fi
 echo
 
@@ -646,7 +645,7 @@ echo
 
 # Run gowitness only on the reachable results
 echo -e "\e[31mGoWitness Getting Screenshots for reachable onions...\e[0m"
-sudo ./gowitness scan file -f "$DARKFOX_DIR/results.onion.csv" \
+sudo "$GOWIT" scan file -f "$DARKFOX_DIR/results.onion.csv" \
     --threads 8 \
     --write-db \
     --screenshot-fullpage \
@@ -659,7 +658,7 @@ echo
 
 # Start Web Server & Open Gallery
 echo "Starting GoWitness Server..."
-sudo qterminal -e ./gowitness report server > /dev/null 2>&1 & disown
+sudo qterminal -e "$GOWIT" report server > /dev/null 2>&1 & disown
 sleep 2
 
 GOSERVER="http://127.0.0.1:7171/gallery"
