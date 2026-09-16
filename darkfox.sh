@@ -177,14 +177,83 @@ mkdir -p /opt/darkfox
 DARKFOX_DIR="/opt/darkfox"
 cd "$DARKFOX_DIR" || exit 1
 
-# Verify gowitness
-GOWIT="$(command -v gowitness)"
+# --- gowitness: require >= 3.2.0, install/upgrade if not -------------------
+GOWIT_MIN="3.2.0"
+SUDO=""; [ "$(id -u)" -ne 0 ] && SUDO="sudo"
+
+gowit_ver() { "$1" version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1; }
+ver_ge()    { [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -n1)" = "$2" ]; }
+
+gowit_remove_old() {   # $1 = path to the outdated binary
+    local pkg
+    if pkg="$(dpkg -S "$1" 2>/dev/null | cut -d: -f1)" && [ -n "$pkg" ]; then
+        echo -e "\e[31m[*] Removing apt package '${pkg}'\e[0m"
+        $SUDO apt-get remove -y "$pkg" >/dev/null 2>&1
+    else
+        echo -e "\e[31m[*] Removing stale binary ${1}\e[0m"
+        $SUDO rm -f "$1"
+    fi
+}
+
+gowit_install_latest() {
+    local src
+    if command -v go >/dev/null 2>&1; then
+        echo -e "\e[31m[*] go install github.com/sensepost/gowitness@latest\e[0m"
+        GOFLAGS=-trimpath go install github.com/sensepost/gowitness@latest || return 1
+        src="$(go env GOPATH)/bin/gowitness"
+        [ -x "$src" ] || { echo -e "\e[31m[!] go install produced no binary\e[0m"; return 1; }
+    else
+        echo -e "\e[31m[*] No Go toolchain — pulling release binary ${GOWIT_MIN}\e[0m"
+        local arch
+        case "$(uname -m)" in
+            x86_64|amd64)  arch="linux-amd64" ;;
+            aarch64|arm64) arch="linux-arm64" ;;
+            armv7l|armv6l) arch="linux-arm"   ;;
+            *) echo -e "\e[31m[!] Unsupported arch: $(uname -m)\e[0m"; return 1 ;;
+        esac
+        src="$(mktemp)"
+        wget -q --show-progress -O "$src" \
+          "https://github.com/sensepost/gowitness/releases/download/${GOWIT_MIN}/gowitness-${GOWIT_MIN}-${arch}" \
+          || { rm -f "$src"; return 1; }
+        [ "$(head -c 4 "$src" | od -An -tx1 | tr -d ' ')" = "7f454c46" ] \
+          || { echo -e "\e[31m[!] Not an ELF binary — aborting\e[0m"; rm -f "$src"; return 1; }
+    fi
+    $SUDO install -m 0755 "$src" /usr/local/bin/gowitness || return 1
+    hash -r
+    return 0
+}
+
+# --- resolve current state --------------------------------------------------
+GOWIT="$(command -v gowitness 2>/dev/null)"
+[ -z "$GOWIT" ] && [ -x /opt/darkfox/gowitness ] && GOWIT="/opt/darkfox/gowitness"
+
 if [ -n "$GOWIT" ]; then
-    print_found "GoWitness"
+    CUR="$(gowit_ver "$GOWIT")"
+    if [ -n "$CUR" ] && ver_ge "$CUR" "$GOWIT_MIN"; then
+        print_found "GoWitness ${CUR} (${GOWIT})"
+    else
+        echo -e "\e[31m[*] GoWitness ${CUR:-unknown} < ${GOWIT_MIN} — upgrading\e[0m"
+        gowit_remove_old "$GOWIT"
+        gowit_install_latest || { echo -e "\e[31m[!] GoWitness upgrade failed\e[0m"; exit 1; }
+    fi
 else
-    echo -e "\e[031mGoWitness not found on PATH. Install it (e.g. 'go install github.com/sensepost/gowitness@latest') and re-run.\e[0m"
+    echo -e "\e[31m[*] GoWitness not found — installing\e[0m"
+    gowit_install_latest || { echo -e "\e[31m[!] GoWitness install failed\e[0m"; exit 1; }
+fi
+
+# --- confirm on PATH, confirm runnable, print version ----------------------
+hash -r
+GOWIT="$(command -v gowitness 2>/dev/null)"
+if [ -z "$GOWIT" ]; then
+    echo -e "\e[31m[!] gowitness still not on \$PATH — check /usr/local/bin is in PATH\e[0m"
     exit 1
 fi
+CUR="$(gowit_ver "$GOWIT")"
+if [ -z "$CUR" ] || ! ver_ge "$CUR" "$GOWIT_MIN"; then
+    echo -e "\e[31m[!] gowitness at ${GOWIT} reports '${CUR:-unreadable}', need >= ${GOWIT_MIN}\e[0m"
+    exit 1
+fi
+echo -e "\e[32m[+] GoWitness ${CUR} — ${GOWIT}\e[0m"
 echo
 
 # Onion Verifier
