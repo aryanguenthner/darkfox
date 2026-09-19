@@ -2,9 +2,11 @@
 Version=1.0
 Type=Application
 Name=DarkFox
-Comment=Start DarkFox
-Exec="sudo /opt/darkfox/darkfox.sh"
+Comment=CTI / OSINT Dark Web research tool
+Exec=bash -c 'cd /opt/darkfox && sudo /opt/darkfox/darkfox.sh; echo; echo "Press Enter or close this window to exit..."; exec bash'
 Icon=wafw00f
 Terminal=true
 StartupNotify=true
-Path=$(pwd)
+Path=/opt/darkfox
+Categories=Network;Security;
+StartupWMClass=DarkFox

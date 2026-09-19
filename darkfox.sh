@@ -34,7 +34,7 @@ cat <<'EOF'
 ╚══════════════════════════════════════════════════════════════╝
 EOF
 echo "OSINT CTI Cyber Threat intelligence v1.2"
-
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:$PATH"
 echo
 # Todays Date
 sudo timedatectl set-ntp true
@@ -223,9 +223,8 @@ gowit_install_latest() {
     return 0
 }
 
-# --- resolve current state --------------------------------------------------
 GOWIT="$(command -v gowitness 2>/dev/null)"
-[ -z "$GOWIT" ] && [ -x /opt/darkfox/gowitness ] && GOWIT="/opt/darkfox/gowitness"
+[ -z "$GOWIT" ] && [ -x /usr/local/bin/gowitness ] && GOWIT=/usr/local/bin/gowitness
 
 if [ -n "$GOWIT" ]; then
     CUR="$(gowit_ver "$GOWIT")"
